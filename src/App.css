@@ -1,0 +1,210 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 100%;
+  padding-left: 60px; /* To accommodate the sidebars */
+  padding-top: 20px;
+}
+
+.with-navbar {
+  padding-left: 70px;
+}
+
+.auth-container, .note-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.note-form, .auth-card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+.note-form input, .note-form textarea, .auth-card input {
+  width: 99%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.note-form button, .auth-card button {
+  width: 22%;
+  padding: 0.5rem;
+  background-color: #7e6ca8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.note-form button:disabled, .auth-card button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.note-form button:hover:not(:disabled), .auth-card button:hover:not(:disabled) {
+  /* background-color: #45a049; */
+}
+
+.notes-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.note-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.note-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.mic-button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background: white;
+  border: 1px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.mic-button svg {
+  color: black;
+}
+
+.mic-button:hover {
+  background: #f1f1f1;
+}
+
+.mic-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  z-index: 1000;
+  width: 300px;
+}
+
+.close-popup-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.mic-popup p {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.mic-popup-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 10px;
+}
+
+.mic-popup-button,
+.cancel-popup-button {
+  background: #4caf50;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+  color: white;
+}
+
+.mic-popup-button:hover,
+.cancel-popup-button:hover {
+  background: #45a049;
+}
+
+.cancel-popup-button {
+  background: #f44336;
+}
+
+.cancel-popup-button:hover {
+  background: #e53935;
+}
+
+.mic-popup-button .recording {
+  animation: recording-animation 1s infinite;
+}
+
+@keyframes recording-animation {
+  0% { color: white; }
+  50% { color: red; }
+  100% { color: white; }
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+.color-picker {
+  margin-bottom: 10px;
+}
+
+.color-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.color-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.color-circle.selected {
+  border: 2px solid #333;
+}

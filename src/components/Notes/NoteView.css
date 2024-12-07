@@ -1,0 +1,22 @@
+.note-view {
+    padding: 20px;
+    background-color: #fff;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    border-radius: 10px;
+}
+
+.note-view h2 {
+    margin: 0 0 10px;
+    font-size: 2em;
+}
+
+.note-view p {
+    margin: 10px 0;
+    color: #666;
+}
+
+.note-date {
+    margin-top: 20px;
+    color: #888;
+    font-size: 0.9em;
+}

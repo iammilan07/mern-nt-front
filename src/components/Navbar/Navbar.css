@@ -1,0 +1,75 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100vh;
+    background-color: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    z-index: 10000; /* Ensure the navbar is in front of other elements */
+}
+
+.navbar-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.icon-container {
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    padding: 10px;
+    border-radius: 15%; /* Set the border radius to 15% */
+    background-color: white; /* Circle background color */
+    position: relative;
+    right: -7px; /* Adjust the position to touch the right border of the navbar */
+}
+
+.icon-container:hover, .icon-container.active {
+    background-color: #f0f2f5;
+    color: black; /* Ensure the icon color is visible */
+    transform: scale(1.1);
+}
+
+.expand-hover {
+    position: relative;
+}
+
+.hover-text {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 45px; /* Position to the left of the + icon */
+    background-color: #fff;
+    color: black;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10001; /* Ensure hover text is in front of all other elements */
+    padding: 0.5rem;
+}
+
+.text-option {
+    margin: 0.5rem 0;
+    width: 120px;
+    padding: 0.5rem;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.text-option:hover, .text-option.active {
+    background-color: #e0e0e0;
+    color: black; /* Change text color to black */
+}
+
+.logout {
+    margin-top: auto;
+}

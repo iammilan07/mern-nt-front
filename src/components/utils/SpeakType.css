@@ -1,0 +1,124 @@
+.speak-type {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.speak-type h2 {
+    margin-bottom: 10px;
+}
+
+.speak-type p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.title-input-container {
+    margin-bottom: 20px;
+}
+
+.title-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.record-button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.record-button.start-button {
+    background-color: #4caf50;
+}
+
+.record-button.stop-button {
+    background-color: #f44336;
+}
+
+.record-button.pause-button {
+    background-color: #ffeb3b;
+    color: black;
+}
+
+.record-button.resume-button {
+    background-color: #4caf50;
+}
+
+.record-button:hover {
+    opacity: 0.8;
+}
+
+.recording-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.recording-animation {
+    margin-top: 20px;
+    font-size: 16px;
+    color: red;
+    animation: pulse 1s infinite;
+}
+
+.recording-animation span {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.audio-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.audio-preview audio {
+    margin-bottom: 10px;
+}
+
+.audio-preview button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4caf50;
+    color: white;
+}
+
+.audio-preview .re-record-button {
+    background-color: #f44336;
+}
+
+.audio-preview button:hover {
+    background-color: #45a049;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
