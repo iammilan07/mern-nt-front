@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import NotesList from './Notes/NotesList';
 import './MainContent.css';
 
 const MainContent = () => {
@@ -26,8 +25,8 @@ const MainContent = () => {
 
     return (
         <div className="main-content">
-            <h1>Welcome, {username} to the Note Taking System!</h1>
-            <NotesList />
+            <h1>Welcome, {username} to the System!</h1>
+            
         </div>
     );
 };

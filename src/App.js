@@ -6,7 +6,8 @@ import Register from './components/Auth/Register';
 import MainContent from './components/MainContent';
 import AddNote from './components/Notes/AddNote';
 import NoteView from './components/Notes/NoteView';
-import NewsFeed from './components/newsFeed/newsFeed'; // Import NewsFeed component
+import NewsFeed from './components/newsFeed/newsFeed';
+import AllNotes from './components/Notes/AllNotes';
 import SpeakType from './components/utils/SpeakType';
 import Welcome from './components/Welcome';
 import { ToastContainer } from 'react-toastify';
@@ -44,6 +45,7 @@ const App = () => {
                     <Route path="/edit-note/:id" element={<AddNote notes={notes} updateNote={updateNote} />} />
                     <Route path="/view/:id" element={<NoteView />} />
                     <Route path="/news-feed" element={<NewsFeed />} /> 
+                    <Route path="/all-notes" element={<AllNotes/>} />
                     <Route path="/speak-type" element={<SpeakType addVoiceNote={addNote} />} />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>

@@ -38,6 +38,10 @@ const NotesList = () => {
 
     return (
         <div className="notes-list-container">
+            <div className="all-notes">
+        <h1>All Notes</h1>
+        {/* <NotesList /> */}
+    </div>
             <div className="search-bar">
                 <FaSearch className="search-icon" />
                 <input

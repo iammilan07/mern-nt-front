@@ -5,6 +5,7 @@ import { FiHome, FiPlus, FiLogOut } from 'react-icons/fi';
 import { MdFeed } from 'react-icons/md'; // Import the news feed icon
 import Modal from '../Modal/Modal'; // Import the Modal component
 import 'react-toastify/dist/ReactToastify.css';
+import { LuNotebookPen } from "react-icons/lu";
 import './Navbar.css';
 
 const Navbar = () => {
@@ -32,6 +33,13 @@ const Navbar = () => {
         navigate('/news-feed'); // Navigate to the news feed page
         setActiveIcon('news-feed');
     };
+
+
+    const handleNotesClick = () => {
+        navigate('/all-notes'); // Navigate to the news feed page
+        setActiveIcon('all-notes');
+    };
+
 
     const handleLogoutConfirm = () => {
         localStorage.removeItem('token');
@@ -95,6 +103,17 @@ const Navbar = () => {
                         </div>
                     )}
                 </div>
+
+                <div 
+                    className={`icon-container ${activeIcon === 'all-notes' ? 'active' : ''}`} 
+                    onClick={handleNotesClick}
+                    onMouseEnter={() => setActiveIcon('all-notes')}
+                    onMouseLeave={() => setActiveIcon(null)}
+                >
+                    <LuNotebookPen  size={24} />
+                </div>
+
+
                 <div 
                     className={`icon-container logout ${activeIcon === 'logout' ? 'active' : ''}`} 
                     onClick={handleLogoutClick}
