@@ -23,23 +23,24 @@ body {
   height: 100vh;
 }
 
-.note-form, .auth-card {
+
+
+
+/* .note-form{
   background: white;
   border-radius: 8px;
   padding: 2rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 400px;
 }
-
-.note-form input, .note-form textarea, .auth-card input {
+.note-form input, .note-form textarea{
   width: 99%;
   padding: 0.5rem;
   margin-bottom: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
-.note-form button, .auth-card button {
+.note-form button{
   width: 22%;
   padding: 0.5rem;
   background-color: #7e6ca8;
@@ -50,13 +51,52 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.note-form button:disabled, .auth-card button:disabled {
+.note-form button:disabled{
   background-color: #999;
   cursor: not-allowed;
 }
 
-.note-form button:hover:not(:disabled), .auth-card button:hover:not(:disabled) {
-  /* background-color: #45a049; */
+.note-form button:hover:not(:disabled){
+  background-color: #45a049;
+} */
+
+
+
+
+
+.auth-card {
+  background: white;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+.auth-card input {
+  width: 99%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.auth-card button {
+  width: 22%;
+  padding: 0.5rem;
+  background-color: #7e6ca8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.auth-card button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+.auth-card button:hover:not(:disabled) {
+  background-color: #6258d7;
 }
 
 .notes-list {
@@ -146,7 +186,7 @@ body {
 
 .mic-popup-button,
 .cancel-popup-button {
-  background: #4caf50;
+  background: #3395c6;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -162,7 +202,7 @@ body {
 
 .mic-popup-button:hover,
 .cancel-popup-button:hover {
-  background: #45a049;
+  background: #6fbfdc;
 }
 
 .cancel-popup-button {

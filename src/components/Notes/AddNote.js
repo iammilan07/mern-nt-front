@@ -166,13 +166,15 @@ const AddNote = ({ notes = [], addNote, updateNote }) => {
         <div className="note-container full-screen">
             <form onSubmit={handleAddOrEditNote} className="note-form full-screen">
                 <h2>{id ? 'Edit Note' : 'Add Note'}</h2>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
+                <div className="title-container">
+                    <input
+                        type="text"
+                        placeholder="Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                    />
+                </div>
                 <div className="description-container">
                     <textarea
                         ref={textAreaRef}
