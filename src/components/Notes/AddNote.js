@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom'; // Import useParams
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaMicrophone, FaTimes } from 'react-icons/fa';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import './Notes.css';
 
 const colors = [
@@ -24,10 +26,9 @@ const AddNote = ({ notes = [], addNote, updateNote }) => {
     const [isRecording, setIsRecording] = useState(false);
     const [isSpeaking, setIsSpeaking] = useState(false);
     const navigate = useNavigate();
-    const textAreaRef = useRef(null);
     const recognitionRef = useRef(null);
     const silenceTimerRef = useRef(null);
-    const { id } = useParams(); // Get the note ID from URL parameters
+    const { id } = useParams();
 
     useEffect(() => {
         if (id) {
@@ -51,13 +52,6 @@ const AddNote = ({ notes = [], addNote, updateNote }) => {
         }
     }, [id, navigate]);
 
-    useEffect(() => {
-        if (textAreaRef.current) {
-            textAreaRef.current.style.height = 'auto';
-            textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-        }
-    }, [description]);
-
     const handleAddOrEditNote = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -66,13 +60,11 @@ const AddNote = ({ notes = [], addNote, updateNote }) => {
 
         try {
             if (id) {
-                // Edit existing note
                 await axios.put(`/api/notes/${id}`, noteData, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 toast.success('Note updated successfully');
             } else {
-                // Add new note
                 await axios.post('/api/notes', noteData, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -167,23 +159,20 @@ const AddNote = ({ notes = [], addNote, updateNote }) => {
             <form onSubmit={handleAddOrEditNote} className="note-form full-screen">
                 <h2>{id ? 'Edit Note' : 'Add Note'}</h2>
                 <div className="title-container">
-                    <input
-                        type="text"
-                        placeholder="Title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
-                </div>
+                <input
+                    type="text"
+                    placeholder="Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                /></div>
                 <div className="description-container">
-                    <textarea
-                        ref={textAreaRef}
-                        placeholder="Description"
+                    <ReactQuill
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows="5"
-                        required
-                    ></textarea>
+                        onChange={setDescription}
+                        theme="snow"
+                        placeholder="Description"
+                    />
                     <button className="mic-button" type="button" onClick={togglePopup}>
                         <FaMicrophone size={20} />
                     </button>
