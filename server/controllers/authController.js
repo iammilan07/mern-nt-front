@@ -2,6 +2,8 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+console.log('Auth Controller Loaded'); // Debug log
+
 const registerUser = async (req, res) => {
     const { username, email, password } = req.body;
 
@@ -16,7 +18,7 @@ const registerUser = async (req, res) => {
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        // console.error('Error in registerUser:', error);
+        console.error('Error in registerUser:', error); // Debug log
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -38,7 +40,7 @@ const loginUser = async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         res.status(200).json({ token });
     } catch (error) {
-        // console.error('Error in loginUser:', error);
+        console.error('Error in loginUser:', error); // Debug log
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -49,14 +51,16 @@ const logoutUser = (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-        // console.log('Fetching user data for ID:', req.user.id); // Add log to check user ID
+        console.log('Fetching user data for ID:', req.user.id); // Debug log
         const user = await User.findById(req.user.id).select('-password');
-        // console.log('User data:', user); // Add log to check user data
+        console.log('User data:', user); // Debug log
         res.json(user);
     } catch (error) {
-        // console.error('Error fetching user data:', error);
+        console.error('Error fetching user data:', error); // Debug log
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+console.log('Auth Controller Functions Defined'); // Debug log
 
 module.exports = { registerUser, loginUser, logoutUser, getUser };

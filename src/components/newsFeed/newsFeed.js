@@ -7,6 +7,9 @@ const NewsFeed = () => {
     const [user, setUser] = useState('');
     const [posts, setPosts] = useState([]);
     const [postContent, setPostContent] = useState('');
+    const [commentContent, setCommentContent] = useState('');
+    const [showComments, setShowComments] = useState(null);
+    const [comments, setComments] = useState({});
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [editingPost, setEditingPost] = useState(null);
     const navigate = useNavigate();
@@ -45,6 +48,15 @@ const NewsFeed = () => {
             setPosts(response.data);
         } catch (error) {
             console.error('Error refetching posts:', error);
+        }
+    };
+
+    const fetchComments = async (postId) => {
+        try {
+            const response = await axios.get(`/api/posts/${postId}/comments`);
+            setComments(prevComments => ({ ...prevComments, [postId]: response.data }));
+        } catch (error) {
+            console.error('Error fetching comments:', error);
         }
     };
 
@@ -91,10 +103,32 @@ const NewsFeed = () => {
         }
     };
 
+    const handleCommentCreate = async (postId) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.post(`/api/posts/${postId}/comments`, { content: commentContent }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setCommentContent('');
+            fetchComments(postId);
+        } catch (error) {
+            console.error('Error creating comment:', error);
+        }
+    };
+
     const openEditPopup = (post) => {
         setPostContent(post.content);
         setEditingPost(post);
         setIsPopupVisible(true);
+    };
+
+    const toggleComments = (postId) => {
+        if (showComments === postId) {
+            setShowComments(null);
+        } else {
+            setShowComments(postId);
+            fetchComments(postId);
+        }
     };
 
     return (
@@ -130,6 +164,24 @@ const NewsFeed = () => {
                             <div className="post-actions">
                                 <button onClick={() => openEditPopup(post)}>Edit</button>
                                 <button onClick={() => handleDeletePost(post._id)}>Delete</button>
+                            </div>
+                        )}
+                        <button onClick={() => toggleComments(post._id)}>
+                            {showComments === post._id ? 'Hide Comments' : 'Show Comments'}
+                        </button>
+                        {showComments === post._id && (
+                            <div className="comments-section">
+                                {comments[post._id]?.map(comment => (
+                                    <div key={comment._id} className="comment">
+                                        <p><strong>{comment.user.username}:</strong> {comment.content}</p>
+                                    </div>
+                                ))}
+                                <textarea
+                                    placeholder="Write a comment..."
+                                    value={commentContent}
+                                    onChange={(e) => setCommentContent(e.target.value)}
+                                ></textarea>
+                                <button onClick={() => handleCommentCreate(post._id)}>Submit</button>
                             </div>
                         )}
                     </div>
