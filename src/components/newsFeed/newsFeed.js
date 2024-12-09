@@ -200,6 +200,7 @@ const NewsFeed = () => {
                     <div key={post._id} className="post-card">
                         <p>{post.user?.username || 'Unknown User'} added a post</p>
                         <p>{post.content}</p>
+                        <p>Created on: {formatDate(post.createdAt)}</p>
                         {post.user?.username === user && (
                             <div className="post-actions">
                                 <button onClick={() => openEditPopup(post)}>Edit</button>

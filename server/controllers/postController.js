@@ -1,7 +1,5 @@
 const Post = require('../models/Post');
 
-// console.log('Post Controller Loaded'); // Debug log
-
 // Function to create a new post
 const createPost = async (req, res) => {
     const { content } = req.body;
@@ -24,29 +22,20 @@ const getPosts = async (req, res) => {
     }
 };
 
-
-
-// console.log('Post Controller Loaded'); // Debug log
-
 // Function to delete a post
 const deletePost = async (req, res) => {
     const { postId } = req.params;
     try {
-        // console.log('Attempting to delete post with ID:', postId); // Debug log
         const post = await Post.findById(postId);
         if (!post) {
-            // console.log('Post not found'); // Debug log
             return res.status(404).json({ message: 'Post not found' });
         }
         if (post.user.toString() !== req.user.id) {
-            // console.log('Unauthorized attempt to delete post'); // Debug log
             return res.status(401).json({ message: 'Unauthorized' });
         }
         await Post.deleteOne({ _id: postId });
-        // console.log('Post deleted successfully'); // Debug log
         res.status(200).json({ message: 'Post deleted successfully' });
     } catch (error) {
-        // console.error('Error deleting post:', error); // Debug log
         res.status(500).json({ message: 'Error deleting post', error });
     }
 };
@@ -66,8 +55,6 @@ const updatePost = async (req, res) => {
         res.status(500).json({ message: 'Error updating post', error });
     }
 };
-
-// console.log('Post Controller Functions Defined'); // Debug log
 
 module.exports = {
     createPost,
