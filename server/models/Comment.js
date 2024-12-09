@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-console.log('Loading Comment model'); // Debug log
+// console.log('Loading Comment model'); // Debug log
 
 const commentSchema = new mongoose.Schema({
     user: {
@@ -20,9 +20,12 @@ const commentSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    updatedAt: {
+        type: Date
     }
 });
 
-console.log('Comment model schema defined'); // Debug log
+// console.log('Comment model schema defined'); // Debug log
 
 module.exports = mongoose.model('Comment', commentSchema);

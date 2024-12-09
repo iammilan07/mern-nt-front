@@ -51,16 +51,6 @@ const deletePost = async (req, res) => {
     }
 };
 
-// console.log('Post Controller Functions Defined'); // Debug log
-
-
-
-
-
-
-
-
-
 // Function to update a post
 const updatePost = async (req, res) => {
     const { postId } = req.params;
