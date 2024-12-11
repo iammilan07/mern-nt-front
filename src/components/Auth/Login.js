@@ -15,7 +15,9 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.post('/api/auth/login', { email, password });
+            const response = await axios.post('/api/auth/login', { email, password }, {
+                headers: { 'Content-Type': 'application/json' }
+            });
             localStorage.setItem('token', response.data.token);
             toast.success('Logged in successfully');
             navigate('/');
