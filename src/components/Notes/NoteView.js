@@ -60,7 +60,10 @@ function NoteView() {
                 <div className="text-note">
                     <h2>{note.title}</h2>
                     <p className="note-date">{new Date(note.updatedAt).toLocaleString()}</p>
-                    <p>{note.description}</p>
+                    <div 
+                        className="note-description" 
+                        dangerouslySetInnerHTML={{ __html: note.description }}
+                    />
                 </div>
             )}
         </div>
