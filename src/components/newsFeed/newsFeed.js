@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { FaEllipsisH, FaCommentAlt } from 'react-icons/fa';
+import Comments from './Comments'; // Import the Comments component
 import './newsFeed.css';
+import { useNavigate } from 'react-router-dom';
 
 const NewsFeed = () => {
     const [user, setUser] = useState('');
     const [posts, setPosts] = useState([]);
     const [postContent, setPostContent] = useState('');
-    const [commentContent, setCommentContent] = useState('');
-    const [showComments, setShowComments] = useState(null);
-    const [comments, setComments] = useState({});
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const [editingPost, setEditingPost] = useState(null);
-    const [editingComment, setEditingComment] = useState(null);
+    const [showMenu, setShowMenu] = useState(null);
+    const [expandedPosts, setExpandedPosts] = useState([]); // Correct the state definition here
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const NewsFeed = () => {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (response.data.username) {
-                    setUser(response.data.username);
+                    setUser(response.data);
                 }
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -49,18 +49,6 @@ const NewsFeed = () => {
             setPosts(response.data);
         } catch (error) {
             console.error('Error refetching posts:', error);
-        }
-    };
-
-    const fetchComments = async (postId) => {
-        try {
-            const token = localStorage.getItem('token');
-            const response = await axios.get(`/api/posts/${postId}/comments`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setComments(prevComments => ({ ...prevComments, [postId]: response.data }));
-        } catch (error) {
-            console.error('Error fetching comments:', error);
         }
     };
 
@@ -107,71 +95,10 @@ const NewsFeed = () => {
         }
     };
 
-    const handleCommentCreate = async (postId) => {
-        try {
-            const token = localStorage.getItem('token');
-            await axios.post(`/api/posts/${postId}/comments`, { content: commentContent }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setCommentContent('');
-            fetchComments(postId);
-        } catch (error) {
-            console.error('Error creating comment:', error);
-        }
-    };
-
-    const handleDeleteComment = async (commentId, postId) => {
-        try {
-            const token = localStorage.getItem('token');
-            await axios.delete(`/api/posts/${postId}/comments/${commentId}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            fetchComments(postId);
-        } catch (error) {
-            console.error('Error deleting comment:', error);
-        }
-    };
-
-    const handleEditComment = async (commentId, postId) => {
-        try {
-            const token = localStorage.getItem('token');
-            await axios.put(`/api/posts/${postId}/comments/${commentId}`, { content: commentContent }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setCommentContent('');
-            setEditingComment(null);
-            fetchComments(postId);
-        } catch (error) {
-            console.error('Error editing comment:', error);
-        }
-    };
-
     const openEditPopup = (post) => {
         setPostContent(post.content);
         setEditingPost(post);
         setIsPopupVisible(true);
-    };
-
-    const toggleComments = (postId) => {
-        if (showComments === postId) {
-            setShowComments(null);
-        } else {
-            setShowComments(postId);
-            fetchComments(postId);
-        }
-    };
-
-    const handleCommentEditClick = (comment) => {
-        setCommentContent(comment.content); // Set the content to be edited
-        setEditingComment(comment);
-    };
-
-    const handleCommentSubmit = async (postId) => {
-        if (editingComment) {
-            await handleEditComment(editingComment._id, postId);
-        } else {
-            await handleCommentCreate(postId);
-        }
     };
 
     const formatDate = (dateString) => {
@@ -179,10 +106,20 @@ const NewsFeed = () => {
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
+    const toggleMenu = (postId) => {
+        setShowMenu(prev => (prev === postId ? null : postId));
+    };
+
+    const toggleComments = (postId) => {
+        setExpandedPosts(prev =>
+            prev.includes(postId) ? prev.filter(id => id !== postId) : [...prev, postId]
+        );
+    };
+
     return (
         <div className="news-feed">
             <div className="create-post-card" onClick={() => { setIsPopupVisible(true); setEditingPost(null); }}>
-                <textarea placeholder={`What's on your mind, ${user}?`} readOnly></textarea>
+                <textarea placeholder={`What's on your mind, ${user.username}?`} readOnly></textarea>
             </div>
             {isPopupVisible && (
                 <div className="popup-card">
@@ -191,9 +128,9 @@ const NewsFeed = () => {
                         <button onClick={() => { setIsPopupVisible(false); setEditingPost(null); }}>&times;</button>
                     </div>
                     <div className="popup-body">
-                        <p>{user}</p>
+                        <p>{user.username}</p>
                         <textarea
-                            placeholder={`What's on your mind, ${user}?`}
+                            placeholder={`What's on your mind, ${user.username}?`}
                             value={postContent}
                             onChange={(e) => setPostContent(e.target.value)}
                         ></textarea>
@@ -206,42 +143,28 @@ const NewsFeed = () => {
             <div className="posts">
                 {posts.map(post => (
                     <div key={post._id} className="post-card">
-                        <p>{post.user?.username || 'Unknown User'} added a post</p>
+                        <div className="post-header">
+                            <p>{post.user?.username || 'Unknown User'} added a post</p>
+                            <p className="post-date">Created at {formatDate(post.createdAt)}</p>
+                            {post.user._id === user._id && (
+                                <span className="post-options">
+                                    <FaEllipsisH onClick={() => toggleMenu(post._id)} />
+                                    {showMenu === post._id && (
+                                        <div className="dropdown-menu">
+                                            <button onClick={() => openEditPopup(post)}>Edit</button>
+                                            <button onClick={() => handleDeletePost(post._id)}>Delete</button>
+                                        </div>
+                                    )}
+                                </span>
+                            )}
+                        </div>
                         <p>{post.content}</p>
-                        <p>Created on: {formatDate(post.createdAt)}</p>
-                        {post.user?.username === user && (
-                            <div className="post-actions">
-                                <button onClick={() => openEditPopup(post)}>Edit</button>
-                                <button onClick={() => handleDeletePost(post._id)}>Delete</button>
-                            </div>
-                        )}
-                        <button onClick={() => toggleComments(post._id)}>
-                            {showComments === post._id ? 'Hide Comments' : 'Show Comments'}
-                        </button>
-                        {showComments === post._id && (
-                            <div className="comments-section">
-                                {comments[post._id]?.map(comment => (
-                                    <div key={comment._id} className="comment">
-                                        <p><strong>{comment.user.username}:</strong> {comment.content}</p>
-                                        <p>Updated at: {formatDate(comment.updatedAt || comment.createdAt)}</p>
-                                        {comment.user.username === user && (
-                                            <div className="comment-actions">
-                                                <button onClick={() => handleCommentEditClick(comment)}>Edit</button>
-                                                <button onClick={() => handleDeleteComment(comment._id, post._id)}>Delete</button>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                                <textarea
-                                    placeholder="Write a comment..."
-                                    value={commentContent}
-                                    onChange={(e) => setCommentContent(e.target.value)}
-                                ></textarea>
-                                <button onClick={() => handleCommentSubmit(post._id)}>
-                                    {editingComment ? 'Save Changes' : 'Submit'}
-                                </button>
-                            </div>
-                        )}
+                        <div className="post-footer">
+                            <button onClick={() => toggleComments(post._id)} className="comment-button">
+                                <FaCommentAlt /> <span>Comment</span>
+                            </button>
+                        </div>
+                        {expandedPosts.includes(post._id) && <Comments postId={post._id} user={user} postUserId={post.user._id} />}
                     </div>
                 ))}
             </div>
