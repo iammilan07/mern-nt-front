@@ -166,6 +166,14 @@ const NewsFeed = () => {
         setEditingComment(comment);
     };
 
+    const handleCommentSubmit = async (postId) => {
+        if (editingComment) {
+            await handleEditComment(editingComment._id, postId);
+        } else {
+            await handleCommentCreate(postId);
+        }
+    };
+
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
@@ -222,11 +230,6 @@ const NewsFeed = () => {
                                                 <button onClick={() => handleDeleteComment(comment._id, post._id)}>Delete</button>
                                             </div>
                                         )}
-                                        {post.user.username === user && comment.user.username !== user && (
-                                            <div className="comment-actions">
-                                                <button onClick={() => handleDeleteComment(comment._id, post._id)}>Delete</button>
-                                            </div>
-                                        )}
                                     </div>
                                 ))}
                                 <textarea
@@ -234,7 +237,9 @@ const NewsFeed = () => {
                                     value={commentContent}
                                     onChange={(e) => setCommentContent(e.target.value)}
                                 ></textarea>
-                                <button onClick={() => handleCommentCreate(post._id)}>Submit</button>
+                                <button onClick={() => handleCommentSubmit(post._id)}>
+                                    {editingComment ? 'Save Changes' : 'Submit'}
+                                </button>
                             </div>
                         )}
                     </div>
