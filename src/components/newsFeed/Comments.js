@@ -3,7 +3,7 @@ import axios from 'axios';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 import './comments.css'; // Import the CSS file for comments
 
-const Comments = ({ postId, user, postUserId }) => {
+const Comments = ({ postId, user, postUserId, updateCommentCount }) => {
     const [commentContent, setCommentContent] = useState('');
     const [comments, setComments] = useState([]);
     const [editingComment, setEditingComment] = useState(null);
@@ -15,10 +15,11 @@ const Comments = ({ postId, user, postUserId }) => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setComments(response.data);
+            updateCommentCount(response.data.length); // Update comment count
         } catch (error) {
             console.error('Error fetching comments:', error);
         }
-    }, [postId]);
+    }, [postId, updateCommentCount]);
 
     useEffect(() => {
         fetchComments();

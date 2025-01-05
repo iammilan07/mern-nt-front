@@ -116,6 +116,14 @@ const NewsFeed = () => {
         );
     };
 
+    const updateCommentCount = (postId, count) => {
+        setPosts(prevPosts =>
+            prevPosts.map(post =>
+                post._id === postId ? { ...post, commentCount: count } : post
+            )
+        );
+    };
+
     return (
         <div className="news-feed">
             <div className="create-post-card" onClick={() => { setIsPopupVisible(true); setEditingPost(null); }}>
@@ -165,7 +173,7 @@ const NewsFeed = () => {
                             </button>
                         </div>
                         {expandedPosts.includes(post._id) && post.user && (
-                            <Comments postId={post._id} user={user} postUserId={post.user._id} />
+                            <Comments postId={post._id} user={user} postUserId={post.user._id} updateCommentCount={(count) => updateCommentCount(post._id, count)} />
                         )}
                     </div>
                 ))}
