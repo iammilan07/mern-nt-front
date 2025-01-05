@@ -6,7 +6,7 @@ import './newsFeed.css';
 import { useNavigate } from 'react-router-dom';
 
 const NewsFeed = () => {
-    const [user, setUser] = useState('');
+    const [user, setUser] = useState(null);
     const [posts, setPosts] = useState([]);
     const [postContent, setPostContent] = useState('');
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -119,7 +119,7 @@ const NewsFeed = () => {
     return (
         <div className="news-feed">
             <div className="create-post-card" onClick={() => { setIsPopupVisible(true); setEditingPost(null); }}>
-                <textarea placeholder={`What's on your mind, ${user.username}?`} readOnly></textarea>
+                <textarea placeholder={user ? `What's on your mind, ${user.username}?` : "Loading..."} readOnly></textarea>
             </div>
             {isPopupVisible && (
                 <div className="popup-card">
@@ -128,9 +128,9 @@ const NewsFeed = () => {
                         <button onClick={() => { setIsPopupVisible(false); setEditingPost(null); }}>&times;</button>
                     </div>
                     <div className="popup-body">
-                        <p>{user.username}</p>
+                        <p>{user?.username}</p>
                         <textarea
-                            placeholder={`What's on your mind, ${user.username}?`}
+                            placeholder={user ? `What's on your mind, ${user.username}?` : "Loading..."}
                             value={postContent}
                             onChange={(e) => setPostContent(e.target.value)}
                         ></textarea>
@@ -146,7 +146,7 @@ const NewsFeed = () => {
                         <div className="post-header">
                             <p>{post.user?.username || 'Unknown User'} added a post</p>
                             <p className="post-date">Created at {formatDate(post.createdAt)}</p>
-                            {post.user._id === user._id && (
+                            {post.user && post.user._id === user?._id && (
                                 <span className="post-options">
                                     <FaEllipsisH onClick={() => toggleMenu(post._id)} />
                                     {showMenu === post._id && (
@@ -164,7 +164,9 @@ const NewsFeed = () => {
                                 <FaCommentAlt /> <span>Comment</span>
                             </button>
                         </div>
-                        {expandedPosts.includes(post._id) && <Comments postId={post._id} user={user} postUserId={post.user._id} />}
+                        {expandedPosts.includes(post._id) && post.user && (
+                            <Comments postId={post._id} user={user} postUserId={post.user._id} />
+                        )}
                     </div>
                 ))}
             </div>

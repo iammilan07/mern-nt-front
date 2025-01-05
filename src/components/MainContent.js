@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './MainContent.css';
-
+import NewsFeed from '../components/newsFeed/newsFeed';
 const MainContent = () => {
     const [username, setUsername] = useState('');
 
@@ -26,8 +26,9 @@ const MainContent = () => {
     return (
         <div className="main-content">
             <h1>Welcome, {username} to the System!</h1>
-            
+            <NewsFeed />
         </div>
+        
     );
 };
 

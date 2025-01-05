@@ -3,12 +3,13 @@
     background-color: #f5f5f5;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    /* text-align: center; */
     height: 51rem;
 }
 
 .main-content h1 {
     margin-bottom: 20px;
-    font-size: 2em;
+    font-size: 1.7em;
     color: #333;
+     text-align: center;
 }
