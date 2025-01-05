@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Comment = require('./Comment');
 
 const postSchema = new mongoose.Schema({
     user: {
@@ -13,6 +14,18 @@ const postSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    updatedAt: {
+        type: Date
+    }
+});
+
+postSchema.pre('remove', async function (next) {
+    try {
+        await Comment.deleteMany({ post: this._id });
+        next();
+    } catch (error) {
+        next(error);
     }
 });
 

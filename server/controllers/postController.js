@@ -40,10 +40,16 @@ const deletePost = async (req, res) => {
         if (post.user.toString() !== req.user.id) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
+        
+        // Delete comments associated with the post
+        await Comment.deleteMany({ post: postId });
+
+        // Delete the post itself
         await Post.deleteOne({ _id: postId });
-        res.status(200).json({ message: 'Post deleted successfully' });
+
+        res.status(200).json({ message: 'Post and associated comments deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting post', error });
+        res.status(500).json({ message: 'Error deleting post and associated comments', error });
     }
 };
 
