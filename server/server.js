@@ -5,6 +5,7 @@ const authRoutes = require('./routes/auth');
 const noteRoutes = require('./routes/note');
 const postRoutes = require('./routes/Post'); // Ensure correct import path and casing
 const commentRoutes = require('./routes/comment'); // Ensure correct import path
+const summarizeRoutes = require('./routes/summarize'); // Import the summarize routes
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/notes', noteRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/posts/:postId/comments', commentRoutes); // Ensure correct route definition
+app.use('/api/summarize', summarizeRoutes); // Add the summarize route
 
 console.log('Routes Registered'); // Debug log
 

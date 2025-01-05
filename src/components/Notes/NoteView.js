@@ -7,6 +7,8 @@ function NoteView() {
     const { id } = useParams();
     const [note, setNote] = useState(null);
     const [playbackRate, setPlaybackRate] = useState(1);
+    const [summary, setSummary] = useState(null); // Add state for summary
+    const [loading, setLoading] = useState(false); // Add state for loading
     const audioRef = useRef(null);
 
     useEffect(() => {
@@ -31,16 +33,30 @@ function NoteView() {
         }
     }, [playbackRate]);
 
-    if (!note) {
-        return <p>Note not found.</p>;
-    }
-
     const handlePlaybackRateChange = (rate) => {
         setPlaybackRate(rate);
         if (audioRef.current) {
             audioRef.current.playbackRate = rate;
         }
     };
+
+    const handleSummarize = async () => {
+        if (!note || !note.description) return;
+
+        setLoading(true);
+        try {
+            const response = await axios.post('/api/summarize', { text: note.description });
+            setSummary(response.data.summary);
+        } catch (error) {
+            console.error('Error summarizing note:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (!note) {
+        return <p>Note not found.</p>;
+    }
 
     return (
         <div className="note-view">
@@ -59,11 +75,14 @@ function NoteView() {
             ) : (
                 <div className="text-note">
                     <h2>{note.title}</h2>
-                    <p className="note-date">{new Date(note.updatedAt).toLocaleString()}</p>
+                    <p className="note-date">updated at {new Date(note.updatedAt).toLocaleString()}</p>
                     <div 
                         className="note-description" 
-                        dangerouslySetInnerHTML={{ __html: note.description }}
+                        dangerouslySetInnerHTML={{ __html: summary || note.description }} // Display summary if available
                     />
+                    <button onClick={handleSummarize} className="summarize-button">
+                        {loading ? "Summarizing..." : "Summarize"}
+                    </button>
                 </div>
             )}
         </div>
