@@ -1,5 +1,5 @@
 const Post = require('../models/Post');
-
+const Comment = require('../models/Comment');
 // Function to create a new post
 const createPost = async (req, res) => {
     const { content } = req.body;
@@ -16,11 +16,18 @@ const createPost = async (req, res) => {
 const getPosts = async (req, res) => {
     try {
         const posts = await Post.find().populate('user', 'username');
-        res.status(200).json(posts);
+        const postsWithCommentCount = await Promise.all(
+            posts.map(async (post) => {
+                const commentCount = await Comment.countDocuments({ post: post._id });
+                return { ...post.toObject(), commentCount };
+            })
+        );
+        res.status(200).json(postsWithCommentCount);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching posts', error });
     }
 };
+
 
 // Function to delete a post
 const deletePost = async (req, res) => {

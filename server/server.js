@@ -17,7 +17,6 @@ connectDB();
 // Middleware
 app.use(express.json());
 
-console.log('Server Setup Initialized'); // Debug log
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -26,7 +25,6 @@ app.use('/api/posts', postRoutes);
 app.use('/api/posts/:postId/comments', commentRoutes); // Ensure correct route definition
 app.use('/api/summarize', summarizeRoutes); // Add the summarize route
 
-console.log('Routes Registered'); // Debug log
 
 const PORT = process.env.PORT || 5000;
 

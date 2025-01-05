@@ -161,7 +161,7 @@ const NewsFeed = () => {
                         <p>{post.content}</p>
                         <div className="post-footer">
                             <button onClick={() => toggleComments(post._id)} className="comment-button">
-                                <FaCommentAlt /> <span>Comment</span>
+                                <FaCommentAlt /> <span>Comment ({post.commentCount || 0})</span>
                             </button>
                         </div>
                         {expandedPosts.includes(post._id) && post.user && (
